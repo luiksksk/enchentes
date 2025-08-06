@@ -1,14 +1,40 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Prevenção de Enchentes</title>
+<!-- Carregar o CSS do Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<!-- Carregar o JS do Leaflet -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<!-- Carregar o CSS do Geocoder -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+<!-- Carregar o JS do Geocoder -->
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
     <link rel="stylesheet" href="styles.css">
-    <title>ALERTA!</title>
 </head>
 <body>
-    <h1 class="h1__alerta">Alerta! Risco de enchentes!</h1>
-    <img src="enchentes.jfif" alt="Imagem para refúgios">
-    
+    <header>
+        <h1>Prevenção de Enchentes - Mapa Interativo</h1>
+        <p>Visualize as áreas de risco de enchente no Rio Grande do Sul</p>
+    </header>
+
+    <section id="mapa-container">
+        <!-- Mapa será exibido aqui -->
+        <div id="mapa" style="width: 100%; height: 500px;"></div>
+    </section>
+
+    <footer>
+        <p>Projeto desenvolvido para a Feira de Ciências 2025</p>
+    </footer>
+
+    <!-- Carregar o JS do Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

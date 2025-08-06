@@ -1,14 +1,66 @@
+/* styles.css */
+
+/* Resetando margens e paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    align-items: center; 
-    text-align: center; 
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
-.h1__alerta {
-    align-items: center;
+header {
     text-align: center;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
 }
 
-img {
-    height: 600px;
-    width: 400px;
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
 }
+
+p {
+    font-size: 1.2em;
+}
+
+#mapa-container {
+    margin: 20px auto;
+    width: 100%;
+    height: 507px;  /* Aumentando a altura para garantir que o mapa tenha espaço suficiente */
+    border: 2px solid #333;
+    border-radius: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+/* Personalizando a barra de pesquisa do geocoder */
+.leaflet-control-geocoder input {
+    width: 300px;  /* Ajustando a largura */
+    padding: 8px;  /* Ajustando o espaçamento interno */
+    border-radius: 5px;  /* Bordas arredondadas */
+    border: 1px solid #ccc;  /* Bordas cinzas */
+    font-size: 14px;  /* Tamanho da fonte */
+    color: #333;  /* Cor do texto */
+    margin-top: 10px;  /* Margem superior */
+    margin-right: 10px;  /* Margem à direita */
+}
+
+/* Personalizando a aparência quando o campo de pesquisa está focado */
+.leaflet-control-geocoder input:focus {
+    border-color: #4CAF50;  /* Cor da borda quando focado */
+    outline: none;  /* Remove a linha de contorno */
+}
+
