@@ -1,40 +1,143 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Prevenção de Enchentes</title>
-<!-- Carregar o CSS do Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Monitoramento de Enchentes — RS</title>
 
-<!-- Carregar o JS do Leaflet -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-<!-- Carregar o CSS do Geocoder -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <!-- Leaflet Geocoder CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
-<!-- Carregar o JS do Geocoder -->
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-    <link rel="stylesheet" href="styles.css">
+  <!-- Estilos do projeto -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet Geocoder JS -->
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Prevenção de Enchentes - Mapa Interativo</h1>
-        <p>Visualize as áreas de risco de enchente no Rio Grande do Sul</p>
-    </header>
 
-    <section id="mapa-container">
-        <!-- Mapa será exibido aqui -->
-        <div id="mapa" style="width: 100%; height: 500px;"></div>
-    </section>
+<div class="app">
 
-    <footer>
-        <p>Projeto desenvolvido para a Feira de Ciências 2025</p>
-    </footer>
+  <!-- ============================= HEADER ============================= -->
+  <header>
+    <div class="header-left">
+      <!-- Logo -->
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C8 6 4 9.5 4 14a8 8 0 0016 0c0-4.5-4-8-8-12z"/>
+          <path d="M12 12v4M10 14h4" stroke="#38bdf8" stroke-width="1.5"/>
+        </svg>
+      </div>
 
-    <!-- Carregar o JS do Leaflet -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="script.js"></script>
+      <!-- Títulos -->
+      <div class="header-titles">
+        <h1>
+          Sistema de Monitoramento Hídrico — RS
+          <span class="badge-live">ao vivo</span>
+        </h1>
+        <p>DEFESA CIVIL · RIO GRANDE DO SUL · FEIRA DE CIÊNCIAS 2025</p>
+      </div>
+    </div>
+
+    <!-- Cards de estatísticas -->
+    <div class="header-stats">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-total">5</div>
+        <div class="stat-label">Áreas monitoradas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value danger" id="stat-alto">2</div>
+        <div class="stat-label">Alertas críticos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value warning" id="stat-medio">2</div>
+        <div class="stat-label">Risco médio</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================= CORPO ============================= -->
+  <div class="main-body">
+
+    <!-- SIDEBAR -->
+    <aside>
+
+      <!-- Filtros por nível de risco -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Filtrar por risco</div>
+        <div class="filter-group">
+          <label class="filter-item">
+            <input type="checkbox" id="f-alto" checked onchange="aplicarFiltros()">
+            <span class="filter-dot alto"></span>
+            <span class="filter-text">Risco Alto</span>
+            <span class="filter-count">2</span>
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" id="f-medio" checked onchange="aplicarFiltros()">
+            <span class="filter-dot medio"></span>
+            <span class="filter-text">Risco Médio</span>
+            <span class="filter-count">2</span>
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" id="f-baixo" checked onchange="aplicarFiltros()">
+            <span class="filter-dot baixo"></span>
+            <span class="filter-text">Risco Baixo</span>
+            <span class="filter-count">1</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Lista de pontos de risco -->
+      <div class="sidebar-section-title"
+           style="padding: 14px 16px 4px; font-family: 'IBM Plex Mono', monospace;
+                  font-size: 0.65rem; color: var(--text-faint);
+                  text-transform: uppercase; letter-spacing: 0.12em;">
+        Pontos de risco
+      </div>
+      <div class="points-list" id="points-list"></div>
+
+      <!-- Botão de geolocalização -->
+      <button class="btn-geo" onclick="minhaLocalizacao()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+        </svg>
+        Minha Localização
+      </button>
+
+    </aside>
+
+    <!-- MAPA -->
+    <div class="map-wrapper">
+      <div id="mapa"></div>
+
+      <!-- Legenda sobreposta ao mapa -->
+      <div class="map-legend">
+        <div class="legend-title">Nível de Risco</div>
+        <div class="legend-item"><div class="legend-dot alto"></div> Risco Alto</div>
+        <div class="legend-item"><div class="legend-dot medio"></div> Risco Médio</div>
+        <div class="legend-item"><div class="legend-dot baixo"></div> Risco Baixo</div>
+      </div>
+    </div>
+
+  </div><!-- /main-body -->
+
+</div><!-- /app -->
+
+<!-- Script do projeto (carregado por último) -->
+<script src="script.js"></script>
+
 </body>
 </html>
